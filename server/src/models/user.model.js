@@ -15,11 +15,13 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: string,
-        required: true
+        required: true,
+        select: false
     },
     salt: {
         type: string,
-        required: true
+        required: true,
+        select: false
     }
 }, modelOptions)
 
