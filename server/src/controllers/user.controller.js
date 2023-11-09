@@ -64,7 +64,7 @@ const signin = async(req, res)=>{
 const updatePassword = async (req,res)=>{
     try {
         const {password, newPassword} =req.body;
-        const user = await userModel.findById(req.user.id).select(password id salt)
+        const user = await userModel.findById(req.user.id).select("password id salt")
 
         if(!user) return responseHandler.unauthorized(res);
         if(!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password")
@@ -79,7 +79,7 @@ const updatePassword = async (req,res)=>{
     }
 };
 
-const getInfo = async (req. res)=>{
+const getInfo = async (req, res) => {
     try {
         const user = await userModel.findById(req.user.id);
         if(!user) return responseHandler.notfound(res);
@@ -94,4 +94,4 @@ export default {
     signin,
     getInfo,
     updatePassword
-}
+};
