@@ -10,24 +10,24 @@ export default mongoose.model(
             required: true
         },
         content: {
-            type: string,
+            type: String,
             required: true
         },
         mediaType: {
-            type: string,
+            type: String,
             enum: ["tv", "movie"],
             required: true
         },
         mediaId: {
-            type: string,
+            type: String,
             required: true
         },
         mediaTitle: {
-            type: string,
+            type: String,
             required: true
         },
         mediaPoster: {
-            type: string,
+            type: String,
             required: true
         },
     }, modelOptions)

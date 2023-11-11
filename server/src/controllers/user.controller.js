@@ -2,13 +2,14 @@ import userModel from "../models/user.model.js"
 import jsonwebtoken from "jsonwebtoken"
 import responseHandler from "../handlers/response.handler.js"
 
-const signup = async (req, res) =>{
-    try{
-        const {username, password, displayName} = req.body;
+const signup = async(req, res) => {
+    try {
+        //extracting username, password, displayName from req.body
+        const { username, password, displayName } = req.body;
 
-        const checkUser = await userModel.findOne({username});
+        const checkUser = await userModel.findOne({ username });
 
-        if(checkUser) return responseHandler.badRequest(res,"username already used")
+        if (checkUser) return responseHandler.badRequest(res, "username already used")
 
         const user = new userModel();
 
@@ -17,41 +18,14 @@ const signup = async (req, res) =>{
         user.setPassword(password);
         await user.save();
 
-        const token = jsonwebtoken.sign(
-            {data: user.id},
-            process.env.TOKEN_SECRET,
-            {expiresIn: "24h"}
+        //setting user properties, saving to the database
+        //generates a JWT token for the user and sends it in the response along with user information
+        //excludes sensitive data such as the password and salt from the response
+        const token = jsonwebtoken.sign({ data: user.id },
+            process.env.TOKEN_SECRET, { expiresIn: "24h" }
         );
 
-        responseHandler.created(res,{
-            token,
-            ...user._doc,
-            id: user.id
-        })
-    }catch{
-        responseHandler.error(res)
-    }
-};
-
-const signin = async(req, res)=>{
-    try {
-        const {username, password} = req.body;
-
-        const user = await userModel.findOne({username}).select("username password salt id displaName");
-
-        if(!user) return responseHandler.badRequest(res, "User does not exist");
-        if(!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
-
-        const token = jsonwebtoken.sign(
-            {data: user.id},
-            process.env.TOKEN_SECRET,
-            {expiresIn: "24h"}
-        );
-
-        user.password = undefined;
-        user.salt = undefined;
-
-        responseHandler.created(res,{
+        responseHandler.created(res, {
             token,
             ...user._doc,
             id: user.id
@@ -61,13 +35,43 @@ const signin = async(req, res)=>{
     }
 };
 
-const updatePassword = async (req,res)=>{
+//retrieves the user from the database based on the provided username
+//checks if the user exists & if the provided password is correct
+const signin = async(req, res) => {
     try {
-        const {password, newPassword} =req.body;
+        const { username, password } = req.body;
+
+        const user = await userModel.findOne({ username }).select("username password salt id displaName");
+
+        if (!user) return responseHandler.badRequest(res, "User does not exist");
+        if (!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
+
+        const token = jsonwebtoken.sign({ data: user.id },
+            process.env.TOKEN_SECRET, { expiresIn: "24h" }
+        );
+
+        user.password = undefined;
+        user.salt = undefined;
+
+        responseHandler.created(res, {
+            token,
+            ...user._doc,
+            id: user.id
+        })
+    } catch {
+        responseHandler.error(res)
+    }
+};
+
+
+const updatePassword = async(req, res) => {
+    try {
+        //retrieves the user from the database based on the authenticated user's ID
+        const { password, newPassword } = req.body;
         const user = await userModel.findById(req.user.id).select("password id salt")
 
-        if(!user) return responseHandler.unauthorized(res);
-        if(!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password")
+        if (!user) return responseHandler.unauthorized(res);
+        if (!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password")
 
         user.setPassword(newPassword)
 
@@ -79,10 +83,10 @@ const updatePassword = async (req,res)=>{
     }
 };
 
-const getInfo = async (req, res) => {
+const getInfo = async(req, res) => {
     try {
         const user = await userModel.findById(req.user.id);
-        if(!user) return responseHandler.notfound(res);
+        if (!user) return responseHandler.notfound(res);
         responseHandler.ok(res, user);
     } catch {
         responseHandler.error(res)
