@@ -8,8 +8,8 @@ const userEndpoints = {
     passwordUpdate: "user/update-password", 
 }
 
-const userApi ={
-    singin :async ({username,password}) =>{
+const userApi = {
+    singin : async ({username,password}) =>{
         try{
             const response = await publicClient.post(
                 userEndpoints.singing,
