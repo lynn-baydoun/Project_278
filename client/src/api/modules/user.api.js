@@ -29,13 +29,13 @@ const userApi = {
     },
     getInfo :async () =>{
         try{
-            const response = await publicClient.get(userEndpoints.getInfo);
+            const response = await privateClient.get(userEndpoints.getInfo);
             return {response};
         }catch(err) {return {err}};
     },
     passwordUpdate :async ({password, newPassword, confirmNewPassword}) =>{
         try{
-            const response = await publicClient.put(
+            const response = await privateClient.put(
                 userEndpoints.passwordUpdate,
                 {password, newPassword, confirmNewPassword}
             );

@@ -5,6 +5,7 @@ const personEndpoints = {
     medias : personId => `person/${personId}/medias`,
 }
 
+
 const personApi = {
     detail : async({personId}) =>{
         try{
