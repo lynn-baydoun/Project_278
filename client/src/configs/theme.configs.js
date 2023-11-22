@@ -7,11 +7,10 @@ export const themeModes = {
 }
 
 const getCustomPallete = (mode) =>{
-    let customPallete = {}
     if(mode === themeModes.dark) {
-        return customPallete = {
+        return {
             primary : {
-                main :"#ff0000",
+                main :"#F5C518",
                 contrastText: "#ffffff"
             },
             secondary :{
@@ -24,9 +23,9 @@ const getCustomPallete = (mode) =>{
             }
         }
     }
-    return customPallete = {
+    return {
         primary : {
-            main :"#ff0000",
+            main :"#F5C518",
         },
         secondary :{
             main :"#f44336",

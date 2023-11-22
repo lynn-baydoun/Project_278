@@ -45,7 +45,7 @@ const App = () => {
                   key={index}
                   element= {
                     route.state 
-                      ? (<PageWrapper state={route.state}>{route.element}</PageWrapper>) 
+                      ? (<PageWrapper state={route.state}> {route.element} </PageWrapper>) 
                       : route.element
                   }
                 />
