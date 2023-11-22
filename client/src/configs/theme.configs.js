@@ -6,7 +6,8 @@ export const themeModes = {
     light : "light"
 }
 
-getCustomPallete = (mode) =>{
+const getCustomPallete = (mode) =>{
+    let customPallete = {}
     if(mode === themeModes.dark) {
         return customPallete = {
             primary : {
@@ -37,8 +38,7 @@ getCustomPallete = (mode) =>{
 }
 
 const themeConfigs = {
-    custom : (mode) =>{
-
+    custom : ({mode}) =>{
         return createTheme({
             palette : {
                 mode, 

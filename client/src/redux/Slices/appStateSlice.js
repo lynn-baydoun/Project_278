@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import { pureFinalPropsSelectorFactory } from "react-redux/es/connect/selectorFactory";
 
 export const appStateSlice = createSlice({
     name: "AppState",
@@ -7,7 +8,7 @@ export const appStateSlice = createSlice({
     },
     reducers: {
         setAppState: (state, action) => {
-            state.appState = action.payload; 
+            state.appState = action.payload;
         }
     }
 });
@@ -17,3 +18,4 @@ export const {
 } = appStateSlice.actions;
 
 export default appStateSlice.reducer;
+
