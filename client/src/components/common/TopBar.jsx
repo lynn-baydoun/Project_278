@@ -1,21 +1,24 @@
-import { useSelector, useDispatch } from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import { AppBar, Box, Button, IconButton, Stack, Toolbar, useScrollTrigger } from "@mui/material";
+
+import { useSelector, useDispatch } from "react-redux";
 import { cloneElement, useState } from "react";
 import { Link } from "react-router-dom";
+
 import menuConfigs from "../../configs/menu.configs";
 import { themeModes } from "../../configs/theme.configs";
+
 import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
 import { setThemeMode } from "../../redux/Slices/themeModeSlice";
+
 import Logo from "./Logo";
 import UserMenu from "./UserMenu";
 import Sidebar from "./Sidebar";
 
 const ScrollAppBar = ({ children, window }) => {
   const { themeMode } = useSelector((state) => state.themeMode);
-
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 50,
@@ -29,7 +32,10 @@ const ScrollAppBar = ({ children, window }) => {
     }
   });
 };
-const Topbar = () => {
+
+
+const TopBar = () => {
+
   const { user } = useSelector((state) => state.user);
   const { appState } = useSelector((state) => state.appState);
   const { themeMode } = useSelector((state) => state.themeMode);
@@ -64,8 +70,6 @@ const Topbar = () => {
                 <Logo />
               </Box>
             </Stack>
-
-            {/* main menu */}
             <Box flexGrow={1} alignItems="center" display={{ xs: "none", md: "flex" }}>
               <Box sx={{ marginRight: "30px" }}>
                 <Logo />
@@ -91,10 +95,17 @@ const Topbar = () => {
                 {themeMode === themeModes.dark && <DarkModeOutlinedIcon />}
                 {themeMode === themeModes.light && <WbSunnyOutlinedIcon />}
               </IconButton>
+
             </Box>
+            {/* main menu */}
+
             {/* user menu */}
-            <UserMenu/>
+            <Stack spacing={3} direction="row" alignItems="center">
+              {!user && <Button variant="contained" onClick={ () => dispatch(setAuthModalOpen(true))}>sign in</Button>}
+            </Stack>
+            {user && <UserMenu />}
             {/* user menu */}
+
           </Toolbar>
         </AppBar>
       </ScrollAppBar>
@@ -102,4 +113,4 @@ const Topbar = () => {
   );
 };
 
-export default Topbar;
+export default TopBar;  

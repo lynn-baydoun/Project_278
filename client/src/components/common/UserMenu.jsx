@@ -1,109 +1,64 @@
-import { useSelector, useDispatch } from "react-redux";
-import MenuIcon from "@mui/icons-material/Menu";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
-import { AppBar, Box, Button, IconButton, Stack, Toolbar, useScrollTrigger } from "@mui/material";
-import { cloneElement} from "react";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import { ListItemButton, ListItemIcon, ListItemText, Menu, Typography } from "@mui/material";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import menuConfigs from "../../configs/menu.configs";
-import { themeModes } from "../../configs/theme.configs";
-import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
-import { setThemeMode } from "../../redux/Slices/themeModeSlice";
-import Logo from "./Logo";
-import UserMenu from "./UserMenu";
+import { setUser } from "../../redux/Slices/userSlice";
 
-const ScrollAppBar = ({ children, window }) => {
-  const { themeMode } = useSelector((state) => state.themeMode);
-
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 50,
-    target: window ? window() : undefined
-  });
-
-  return cloneElement(children, {
-    sx: {
-      color: trigger ? "text.primary" : themeMode === themeModes.dark ? "primary.contrastText" : "text.primary",
-      backgroundColor: trigger ? "background.paper" : themeMode === themeModes.dark ? "transparent" : "background.paper"
-    }
-  });
-};
-const Topbar = () => {
+const UserMenu = () => {
   const { user } = useSelector((state) => state.user);
-  const { appState } = useSelector((state) => state.appState);
-  const { themeMode } = useSelector((state) => state.themeMode);
 
   const dispatch = useDispatch();
 
-  const onSwithTheme = () => {
-    const theme = themeMode === themeModes.dark ? themeModes.light : themeModes.dark;
-    dispatch(setThemeMode(theme));
-  };
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const toggleMenu = (e) => setAnchorEl(e.currentTarget);
 
   return (
     <>
-      <ScrollAppBar>
-        <AppBar elevation={0} sx={{ zIndex: 9999 }}>
-          <Toolbar sx={{ alignItems: "center", justifyContent: "space-between" }}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <IconButton
-                color="inherit"
-                sx={{ mr: 2, display: { md: "none" } }}
-                //onClick={toggleSidebar}
+      {user && (
+        <>
+          <Typography
+            variant="h6"
+            sx={{ cursor: "pointer", userSelect: "none" }}
+            onClick={toggleMenu}
+          >
+            {user.displayName}
+          </Typography>
+          <Menu
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+            PaperProps={{ sx: { padding: 0 } }}
+          >
+            {menuConfigs.user.map((item, index) => (
+              <ListItemButton
+                component={Link}
+                to={item.path}
+                key={index}
+                onClick={() => setAnchorEl(null)}
               >
-                <MenuIcon />
-              </IconButton>
-
-              <Box sx={{ display: { xs: "inline-block", md: "none" } }}>
-                <Logo />
-              </Box>
-            </Stack>
-
-            {/* main menu */}
-            <Box flexGrow={1} alignItems="center" display={{ xs: "none", md: "flex" }}>
-              <Box sx={{ marginRight: "30px" }}>
-                <Logo />
-              </Box>
-              {menuConfigs.main.map((item, index) => (
-                <Button
-                  key={index}
-                  sx={{
-                    color: appState.includes(item.state) ? "primary.contrastText" : "inherit",
-                    mr: 2
-                  }}
-                  component={Link}
-                  to={item.path}
-                  variant={appState.includes(item.state) ? "contained" : "text"}
-                >
-                  {item.display}
-                </Button>
-              ))}
-              <IconButton
-                sx={{ color: "inherit" }}
-                onClick={onSwithTheme}
-              >
-                {themeMode === themeModes.dark && <DarkModeOutlinedIcon />}
-                {themeMode === themeModes.light && <WbSunnyOutlinedIcon />}
-              </IconButton>
-            </Box>
-            {/* main menu */}
-
-            {/* user menu */}
-            <Stack spacing={3} direction="row" alignItems="center">
-              {!user && <Button
-                variant="contained"
-                onClick={() => dispatch(setAuthModalOpen(true))}
-              >
-                sign in
-              </Button>}
-            </Stack>
-            {user && <UserMenu />}
-            {/* user menu */}
-          </Toolbar>
-        </AppBar>
-      </ScrollAppBar>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText disableTypography primary={
+                  <Typography textTransform="uppercase">{item.display}</Typography>
+                } />
+              </ListItemButton>
+            ))}
+            <ListItemButton
+              sx={{ borderRadius: "10px" }}
+              onClick={() => dispatch(setUser(null))}
+            >
+              <ListItemIcon><LogoutOutlinedIcon /></ListItemIcon>
+              <ListItemText disableTypography primary={
+                <Typography textTransform="uppercase">sign out</Typography>
+              } />
+            </ListItemButton>
+          </Menu>
+        </>
+      )}
     </>
   );
 };
 
-export default Topbar;
+export default UserMenu;
