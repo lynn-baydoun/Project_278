@@ -4,6 +4,7 @@ import {Box} from "@mui/material";
 import GlobalLoading from "../common/GlobalLoading";
 import Footer from "../common/Footer";
 import TopBar from "../common/TopBar";
+import AuthModal from "../common/AuthModal";
 
 const MainLayout = () => {
     return (
@@ -11,6 +12,9 @@ const MainLayout = () => {
             {/* Global Loading*/}
             <GlobalLoading />
             {/* Global Loading*/}
+            
+            
+            <AuthModal/>
 
             <Box display="flex" minHeight="100vh">
                 {/* header*/}

@@ -98,11 +98,11 @@ const Sidebar = ({ open, toggleSidebar }) => {
         "& .MuiDrawer-Paper": {
           boxSizing: "border-box",
           widh: sidebarWidth,
-          borderRight: "0px"
+          borderRight: "10px"
         }
       }}
     >
-      {drawer}
+    {drawer}
     </Drawer>
   );
 };

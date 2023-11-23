@@ -30,7 +30,6 @@ const UserMenu = () => {
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
             onClose={() => setAnchorEl(null)}
-            PaperProps={{ sx: { padding: 0 } }}
           >
             {menuConfigs.user.map((item, index) => (
               <ListItemButton
