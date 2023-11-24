@@ -5,6 +5,7 @@
 import mongoose from 'mongoose';
 import modelOptions from './model.options.js'
 import crypto from 'crypto';
+import  util from "util"
 
 //define a schema 
 const userSchema = new mongoose.Schema({
@@ -44,17 +45,15 @@ userSchema.methods.setPassword = function(password) {
 
 //validating password, takes a password parameter, hashes it with the stored salt, and compares the resulting hash with the stored password hash, if they match, the password is valid
 userSchema.methods.validPassword = function(password) {
-    const hash = crypto.pbkdf2(
+    const hash = crypto.pbkdf2Sync(
         password,
         this.salt,
         1000,
         64,
         "sha512"
     ).toString("hex");
-
-    return this.password === hash;
+    return this.password === hash.toString("hex");
 }
 
 const userModel = mongoose.model("User", userSchema);
-
 export default userModel;

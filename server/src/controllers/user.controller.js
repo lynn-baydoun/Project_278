@@ -40,11 +40,13 @@ const signup = async(req, res) => {
 const signin = async(req, res) => {
     try {
         const { username, password } = req.body;
-
-        const user = await userModel.findOne({ username }).select("username password salt id displaName");
+        console.log(password)
+        let userData = await userModel.findOne({ username }).select("username password salt id displaName");
+        const user = new userModel(userData);
 
         if (!user) return responseHandler.badRequest(res, "User does not exist");
-        if (!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
+        console.log(user.validPassword(password))
+        if (! await user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
 
         const token = jsonwebtoken.sign({ data: user.id },
             process.env.TOKEN_SECRET, { expiresIn: "24h" }
@@ -58,7 +60,8 @@ const signin = async(req, res) => {
             ...user._doc,
             id: user.id
         })
-    } catch {
+    } catch (err){
+        console.log(err)
         responseHandler.error(res)
     }
 };

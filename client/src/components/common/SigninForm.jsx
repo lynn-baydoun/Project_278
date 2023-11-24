@@ -43,17 +43,6 @@ const SigninForm = ({ switchAuthState }) => {
         signinForm.resetForm();
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
-        // toast("Sign up successful", {
-        //   position: toast.POSITION.TOP_RIGHT,
-        //   autoClose: 3000, // Adjust the duration as needed
-        //   theme: "dark",
-        //   progressClassName : "yellow",
-        //   style: {
-        //     backgroundColor: 'black', // Set the background color to yellow
-        //     color: 'yellow', // Set the text color,
-        //     borderRadius : "2px",
-        //   },
-        // });
       }
 
       if (err) setErrorMessage(err.message);

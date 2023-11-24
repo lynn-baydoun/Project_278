@@ -53,7 +53,7 @@ const SigninForm = ({ switchAuthState }) => {
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
         toast("Sign up successful", {
-            position: toast.POSITION.TOP_RIGHT,
+            position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: 3000, // Adjust the duration as needed
             theme: "dark",
           });
