@@ -3,7 +3,6 @@ import { body } from "express-validator";
 import favoriteController from "../controllers/favorite.controller.js";
 import userController from "../controllers/user.controller.js";
 import requestHandler from "../handlers/request.handler.js";
-import userModel from "../models/user.model.js";
 import tokenMiddleware from "../middlewares/token.middleware.js";
 
 const router = express.Router();
@@ -16,11 +15,7 @@ router.post(
     .exists().withMessage("username is required")
     //checks if the username has a minimum length of 8 characters
     .isLength({ min: 1 }).withMessage("username with a minimum of 8 characters")
-    //custom validation function that checks if the username is already in use by querying the database
-    .custom(async value => {
-        const user = await userModel.findOne({ username: value });
-        if (user) return Promise.reject("username already in use")
-    }),
+    ,
     body("password")
     .exists().withMessage("password is required")
     .isLength({ min: 1 }).withMessage("password with a minimum of 8 characters"),
@@ -75,6 +70,12 @@ router.put(
 
 router.get(
     '/info',
+    tokenMiddleware.auth,
+    userController.getInfo
+);
+
+router.get(
+    '/favorites',
     tokenMiddleware.auth,
     favoriteController.getFavoritesOfUser
 );

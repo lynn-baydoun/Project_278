@@ -6,8 +6,8 @@ const error = (res)=> responseWithData(res,500,{
 });
 
 const badRequest = (res, message) => responseWithData(res, 400,{
-    status: 400,
-    message
+    status: 500,
+    message: message
 });
 
 const ok = (res, data) => responseWithData(res, 200, data)

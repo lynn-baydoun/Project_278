@@ -86,7 +86,7 @@ const updatePassword = async(req, res) => {
 const getInfo = async(req, res) => {
     try {
         const user = await userModel.findById(req.user.id);
-        if (!user) return responseHandler.notfound(res);
+        if (!user) return responseHandler.notfound(res); 
         responseHandler.ok(res, user);
     } catch {
         responseHandler.error(res)
