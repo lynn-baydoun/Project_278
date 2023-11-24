@@ -3,7 +3,11 @@ import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 import * as Yup from "yup";
 import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
@@ -33,15 +37,23 @@ const SigninForm = ({ switchAuthState }) => {
       setErrorMessage(undefined);
       setIsLoginRequest(true);
       const { response, err } = await userApi.signin(values);
-      console.log(response);
-      console.log(err);
       setIsLoginRequest(false);
 
       if (response) {
         signinForm.resetForm();
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
-        toast.success("Sign in success");
+        // toast("Sign up successful", {
+        //   position: toast.POSITION.TOP_RIGHT,
+        //   autoClose: 3000, // Adjust the duration as needed
+        //   theme: "dark",
+        //   progressClassName : "yellow",
+        //   style: {
+        //     backgroundColor: 'black', // Set the background color to yellow
+        //     color: 'yellow', // Set the text color,
+        //     borderRadius : "2px",
+        //   },
+        // });
       }
 
       if (err) setErrorMessage(err.message);

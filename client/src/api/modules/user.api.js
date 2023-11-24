@@ -3,7 +3,7 @@ import publicClient from "../client/public.client";
 
 const userEndpoints = {
     singing : "/user/signin",
-    signup :  "/user/singup",
+    signup :  "/user/signup",
     getInfo : "/user/info",
     passwordUpdate: "/user/update-password", 
 }
