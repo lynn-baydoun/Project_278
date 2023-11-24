@@ -2,14 +2,14 @@ import privateClient from "../client/private.client";
 import publicClient from "../client/public.client";
 
 const userEndpoints = {
-    singing : "user/signin",
-    signup :  "user/singup",
-    getInfo : "user/info",
-    passwordUpdate: "user/update-password", 
+    singing : "/user/signin",
+    signup :  "/user/singup",
+    getInfo : "/user/info",
+    passwordUpdate: "/user/update-password", 
 }
 
 const userApi = {
-    singin : async ({username,password}) =>{
+    signin : async ({username,password}) =>{
         try{
             const response = await publicClient.post(
                 userEndpoints.singing,

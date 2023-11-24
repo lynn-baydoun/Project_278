@@ -1,8 +1,8 @@
 import privateClient from "../client/private.client";
 
 const personEndpoints = {
-    detail : personId => `person/${personId}`,
-    medias : personId => `person/${personId}/medias`,
+    detail : personId => `/person/${personId}`,
+    medias : personId => `/person/${personId}/medias`,
 }
 
 

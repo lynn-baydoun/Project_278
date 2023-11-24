@@ -13,7 +13,7 @@ export const routesGen = {
   mediaList: (type) => `/${type}`,
   mediaDetail: (type, id) => `/${type}/${id}`,
   mediaSearch: "/search",
-  person: (id) => `/person/${id}`,
+  erson: (id) => `/person/${id}`,
   favoriteList: "/favorites",
   reviewList: "/reviews",
   passwordUpdate: "password-update"

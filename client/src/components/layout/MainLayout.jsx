@@ -13,8 +13,9 @@ const MainLayout = () => {
             <GlobalLoading />
             {/* Global Loading*/}
             
-            
+            {/* login modal */}
             <AuthModal/>
+            {/* login modal */}
 
             <Box display="flex" minHeight="100vh">
                 {/* header*/}
