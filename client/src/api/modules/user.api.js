@@ -18,7 +18,7 @@ const userApi = {
             return {response}; 
         }catch(err) {return {err}};
     },
-    signup :async ({username,password, confirmPassword, displayName}) =>{
+    signup : async ({username,password, confirmPassword, displayName}) =>{
         try{
             const response = await publicClient.post(
                 userEndpoints.signup,
