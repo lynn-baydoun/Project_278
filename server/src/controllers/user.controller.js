@@ -16,7 +16,6 @@ const signup = async(req, res) => {
         user.displayName = displayName;
         user.username = username;
         user.setPassword(password);
-        await user.save();
 
         //setting user properties, saving to the database
         //generates a JWT token for the user and sends it in the response along with user information
@@ -40,12 +39,8 @@ const signup = async(req, res) => {
 const signin = async(req, res) => {
     try {
         const { username, password } = req.body;
-        console.log(password)
-        let userData = await userModel.findOne({ username }).select("username password salt id displaName");
-        const user = new userModel(userData);
-
+        const user = await userModel.findOne({ username }).select("username password salt id displayName");
         if (!user) return responseHandler.badRequest(res, "User does not exist");
-        console.log(user.validPassword(password))
         if (! await user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
 
         const token = jsonwebtoken.sign({ data: user.id },
@@ -54,14 +49,12 @@ const signin = async(req, res) => {
 
         user.password = undefined;
         user.salt = undefined;
-
         responseHandler.created(res, {
             token,
             ...user._doc,
             id: user.id
         })
     } catch (err){
-        console.log(err)
         responseHandler.error(res)
     }
 };
