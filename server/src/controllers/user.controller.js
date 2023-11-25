@@ -16,6 +16,7 @@ const signup = async(req, res) => {
         user.displayName = displayName;
         user.username = username;
         user.setPassword(password);
+        user.save();
 
         //setting user properties, saving to the database
         //generates a JWT token for the user and sends it in the response along with user information
