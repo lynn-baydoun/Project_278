@@ -8,13 +8,9 @@ import AuthModal from "../common/AuthModal";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-
 import userApi from "../../api/modules/user.api";
 import favoriteApi from "../../api/modules/favorite.api";
-
 import { setListFavorites,setUser } from "../../redux/Slices/userSlice";
-
 const MainLayout = () => {
     const dispatch = useDispatch();
     const {user} = useSelector( (state) => state.user); 
@@ -22,7 +18,6 @@ const MainLayout = () => {
     useEffect( () =>{
         const authUser = async () =>{
             const {response , err} = await userApi.getInfo();
-            console.log(response);
             if(response) dispatch(setUser(response)); 
             if(err) dispatch(setUser(null));
         }

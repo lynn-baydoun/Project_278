@@ -4,17 +4,16 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import {useSelector } from 'react-redux/es/hooks/useSelector';
 import * as Yup from "yup";
 import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
 import { setUser } from "../../redux/Slices/userSlice";
 
 const SigninForm = ({ switchAuthState }) => {
-
+  const {themeMode} = useSelector((state) => state.themeMode); 
   const dispatch = useDispatch();
 
   const [isLoginRequest, setIsLoginRequest] = useState(false);
@@ -43,6 +42,19 @@ const SigninForm = ({ switchAuthState }) => {
         signinForm.resetForm();
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
+        console.log(themeMode)
+        console.log(themeMode == "dark");
+        toast("Sign in successful", {
+          position: toast.POSITION.BOTTOM_LEFT,
+          autoClose: 3000, // Adjust the duration as needed
+          theme: "null",
+          style : {
+            font: "sans-serif",
+            fontSize : "16px",
+            color: themeMode === "dark" ? "#FFE227" : "#000000",
+            background: themeMode === "dark" ? "#000000" : "#FFE227"
+          }
+        });
       }
 
       if (err) setErrorMessage(err.message);

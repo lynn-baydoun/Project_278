@@ -8,13 +8,14 @@ import * as Yup from "yup";
 import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
 import { setUser } from "../../redux/Slices/userSlice";
-
+import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
-import "./styling/notifications.css";
 
 
 const SigninForm = ({ switchAuthState }) => {
 
+  const { themeMode } = useSelector((state) => state.themeMode); 
+  
   const dispatch = useDispatch();
 
   const [isLoginRequest, setIsLoginRequest] = useState(false);
@@ -53,9 +54,15 @@ const SigninForm = ({ switchAuthState }) => {
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
         toast("Sign up successful", {
-            position: toast.POSITION.BOTTOM_RIGHT,
+            position: toast.POSITION.BOTTOM_LEFT,
             autoClose: 3000, // Adjust the duration as needed
-            theme: "dark",
+            theme: "null",
+            style : {
+              font: "sans-serif",
+              fontSize : "16px",
+              color: themeMode === "dark" ? "#FFE227" : "#000000",
+              background: themeMode === "dark" ? "#000000" : "#FFE227"
+            }
           });
       }
 
