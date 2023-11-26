@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const SigninForm = ({ switchAuthState }) => {
+const SignupForm = ({ switchAuthState }) => {
 
   const { themeMode } = useSelector((state) => state.themeMode); 
   
@@ -21,7 +21,7 @@ const SigninForm = ({ switchAuthState }) => {
   const [isLoginRequest, setIsLoginRequest] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  const signinForm = useFormik({
+  const signupForm = useFormik({
     initialValues: {
       password: "",
       username: "",
@@ -50,9 +50,10 @@ const SigninForm = ({ switchAuthState }) => {
       setIsLoginRequest(false);
 
       if (response) {
-        signinForm.resetForm();
+        signupForm.resetForm();
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
+        
         toast("Sign up successful", {
             position: toast.POSITION.BOTTOM_LEFT,
             autoClose: 3000, // Adjust the duration as needed
@@ -72,51 +73,51 @@ const SigninForm = ({ switchAuthState }) => {
 
   return (
     
-    <Box component="form" onSubmit={signinForm.handleSubmit}>
+    <Box component="form" onSubmit={signupForm.handleSubmit}>
       <Stack spacing={3}>
         <TextField
           type="text"
           placeholder="username"
           name="username"
           fullWidth
-          value={signinForm.values.username}
-          onChange={signinForm.handleChange}
+          value={signupForm.values.username}
+          onChange={signupForm.handleChange}
           color="success"
-          error={signinForm.touched.username && signinForm.errors.username !== undefined}
-          helperText={signinForm.touched.username && signinForm.errors.username}
+          error={signupForm.touched.username && signupForm.errors.username !== undefined}
+          helperText={signupForm.touched.username && signupForm.errors.username}
         />
         <TextField
           type="text"
           placeholder="display name"
           name="displayName"
           fullWidth
-          value={signinForm.values.displayName}
-          onChange={signinForm.handleChange}
+          value={signupForm.values.displayName}
+          onChange={signupForm.handleChange}
           color="success"
-          error={signinForm.touched.displayName && signinForm.errors.displayName !== undefined}
-          helperText={signinForm.touched.displayName && signinForm.errors.displayName}
+          error={signupForm.touched.displayName && signupForm.errors.displayName !== undefined}
+          helperText={signupForm.touched.displayName && signupForm.errors.displayName}
         />
         <TextField
           type="password"
           placeholder="password"
           name="password"
           fullWidth
-          value={signinForm.values.password}
-          onChange={signinForm.handleChange}
+          value={signupForm.values.password}
+          onChange={signupForm.handleChange}
           color="success"
-          error={signinForm.touched.password && signinForm.errors.password !== undefined}
-          helperText={signinForm.touched.password && signinForm.errors.password}
+          error={signupForm.touched.password && signupForm.errors.password !== undefined}
+          helperText={signupForm.touched.password && signupForm.errors.password}
         />
         <TextField
           type="password"
           placeholder="confirm password"
           name="confirmPassword"
           fullWidth
-          value={signinForm.values.confirmPassword}
-          onChange={signinForm.handleChange}
+          value={signupForm.values.confirmPassword}
+          onChange={signupForm.handleChange}
           color="success"
-          error={signinForm.touched.confirmPassword && signinForm.errors.confirmPassword !== undefined}
-          helperText={signinForm.touched.confirmPassword && signinForm.errors.confirmPassword}
+          error={signupForm.touched.confirmPassword && signupForm.errors.confirmPassword !== undefined}
+          helperText={signupForm.touched.confirmPassword && signupForm.errors.confirmPassword}
         />
       </Stack>
 
@@ -150,4 +151,4 @@ const SigninForm = ({ switchAuthState }) => {
   );
 };
 
-export default SigninForm;
+export default SignupForm;

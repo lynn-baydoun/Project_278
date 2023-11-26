@@ -42,8 +42,7 @@ const SigninForm = ({ switchAuthState }) => {
         signinForm.resetForm();
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
-        console.log(themeMode)
-        console.log(themeMode == "dark");
+
         toast("Sign in successful", {
           position: toast.POSITION.BOTTOM_LEFT,
           autoClose: 3000, // Adjust the duration as needed
