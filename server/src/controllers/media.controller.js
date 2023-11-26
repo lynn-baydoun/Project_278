@@ -12,7 +12,7 @@ const getList = async(req, res) => {
         const { mediaType, mediaCategory } = req.params;
         const response = await tmdbApi.mediaList({ mediaType, mediaCategory, page });
         return responseHandler.ok(res, response);
-    } catch {
+    } catch{
         responseHandler.error(res)
     }
 };
@@ -23,7 +23,7 @@ const getGenres = async(req, res) => {
         const response = await tmdbApi.mediaGenres({ mediaType });
         return responseHandler.ok(res, response);
 
-    } catch {
+    } catch (err){
         responseHandler.error(res)
     }
 };
