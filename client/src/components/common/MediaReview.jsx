@@ -82,7 +82,6 @@ const MediaReview = ({ reviews, media, mediaType }) => {
         <Stack spacing={4} marginBottom={2}>
           {filteredReviews.map((item) => (
             item.user ? <Box key={item.id}>
-              <div>this is the id : {item.user.id}</div>
               <ReviewItem review={item} onRemoved={onRemoved} />
               <Divider sx={{
                 display: { xs: "block", md: "none" }

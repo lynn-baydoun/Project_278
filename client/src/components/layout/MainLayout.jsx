@@ -34,7 +34,6 @@ const MainLayout = () => {
         const getFavorites = async() => {
             const {response, err} = await favoriteApi.getList();
             if(response) dispatch(setListFavorites(response));
-            console.log(response);
             if(err)  notify(err.message,themeMode);
         }
         if (user) getFavorites(); 
