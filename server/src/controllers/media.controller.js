@@ -8,11 +8,11 @@ import tokenMiddleware from "../middlewares/token.middleware.js"
 // handles requests to retrieve a list of media items from TMDB; extracts parameters from the request(page, mediaType, and mediaCategory) calls tmdbApi.mediaList to fetch the list from TMDB and sends the response using the responseHandler
 const getList = async(req, res) => {
     try {
-        const { page } = req.body;
+        const { page } = req.query;
         const { mediaType, mediaCategory } = req.params;
         const response = await tmdbApi.mediaList({ mediaType, mediaCategory, page });
         return responseHandler.ok(res, response);
-    } catch{
+    } catch {
         responseHandler.error(res)
     }
 };

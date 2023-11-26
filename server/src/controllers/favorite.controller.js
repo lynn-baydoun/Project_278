@@ -33,8 +33,7 @@ const removeFavorite = async(req, res) => {
         //if not found then return not found
         if (!favorite) return responseHandler.notfound(res);
         responseHandler.ok(res);
-    } catch (err) {
-        console.log(err);
+    } catch {
         responseHandler.error(res);
     }
 };
