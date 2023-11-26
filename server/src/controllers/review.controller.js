@@ -10,11 +10,13 @@ const create = async(req, res) => {
             ...req.body
         });
         await review.save();
-        responseHandler.create(res, {
+        
+        responseHandler.created(res, {
             ...review._doc,
             id: review.id,
-            user: req.user.id
+            user: req.user
         })
+
     } catch {
         responseHandler.error(res)
     }
@@ -23,13 +25,15 @@ const create = async(req, res) => {
 const remove = async(req, res) => {
     try {
         const { reviewId } = req.params;
-        const review = await reviewModel.findOne({
-            _id: review.id,
+
+        const review = await reviewModel.deleteOne({
+            _id: reviewId,
             user: req.user.id
         })
-        if (!review) return responseHandler.notfound(res)
-        await review.remove();
-        responseHandler.ok(res)
+
+        if (!review) return responseHandler.notfound(res)  ;
+
+        responseHandler.ok(res, {message : 'deleted successfully'})
     } catch {
         responseHandler.error(res)
     }
