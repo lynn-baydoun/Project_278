@@ -20,6 +20,15 @@ import { setGlobalLoading } from "../redux/Slices/globalLoadingSlice";
 import { setAuthModalOpen } from "../redux/Slices/authModalSlice";
 import { addFavorite, removeFavorite } from "../redux/Slices/userSlice";
 
+import CastSlide from "../components/common/CastSlide";
+import MediaVideosSlide from "../components/common/MediaVideosSlide";
+import BackdropSlide from "../components/common/BackdropSlide";
+import PosterSlide from "../components/common/PosterSlide";
+import RecommendSlide from "../components/common/RecommendSlide";
+import MediaSlide from "../components/common/MediaSlide";
+import MediaReview from "../components/common/MediaReview";
+import Container from "../components/common/Container";
+
 
 import notify from "./../utils/notification"
 
@@ -43,7 +52,6 @@ const MediaDetail = () => {
     const getMedia = async () => {
       dispatch(setGlobalLoading(true));
       const { response, err } = await mediaApi.getDetail({ mediaType, mediaId });
-      console.log(response);
 
       if (response) {
         setMedia(response);
@@ -210,12 +218,62 @@ const MediaDetail = () => {
                   </Stack>
                   {/* buttons */}
 
+                   {/* cast */}
+                   <Container header="Cast">
+                    <CastSlide casts={media.credits.cast} />
+                  </Container>
+                  {/* cast */}
+
                 </Stack>
               </Box>
               {/* media info */}
             </Box>
           </Box>
           {/* media content */}
+
+           {/* media videos */}
+           <div ref={videoRef} style={{ paddingTop: "2rem" }}>
+            <Container header="Videos">
+              <MediaVideosSlide videos={[...media.videos.results].splice(0, 5)} />
+            </Container>
+          </div>
+          {/* media videos */}
+
+          {/* media backdrop */}
+          {media.images.backdrops.length > 0 && (
+            <Container header="backdrops">
+              <BackdropSlide backdrops={media.images.backdrops} />
+            </Container>
+          )}
+          {/* media backdrop */}
+
+          {/* media posters */}
+          {media.images.posters.length > 0 && (
+            <Container header="posters">
+              <PosterSlide posters={media.images.posters} />
+            </Container>
+          )}
+          {/* media posters */}
+
+          {/* media reviews */}
+          <MediaReview reviews={media.reviews} media={media} mediaType={mediaType} />
+          {/* media reviews */}
+
+          {/* media recommendation */}
+          <Container header="you may also like">
+            {media.recommend.length > 0 && (
+              <RecommendSlide medias={media.recommend} mediaType={mediaType} />
+            )}
+            {media.recommend.length === 0 && (
+              <MediaSlide
+                mediaType={mediaType}
+                mediaCategory={tmdbConfigs.mediaCategory.top_rated}
+              />
+            )}
+          </Container>
+          {/* media recommendation */}
+
+
         </Box>
       </>
     ) : null
