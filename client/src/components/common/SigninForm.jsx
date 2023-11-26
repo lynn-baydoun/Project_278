@@ -12,6 +12,8 @@ import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
 import { setUser } from "../../redux/Slices/userSlice";
 
+import notify from "./../../utils/notification";
+
 const SigninForm = ({ switchAuthState }) => {
   const {themeMode} = useSelector((state) => state.themeMode); 
   const dispatch = useDispatch();
@@ -43,17 +45,7 @@ const SigninForm = ({ switchAuthState }) => {
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
 
-        toast("Sign in successful", {
-          position: toast.POSITION.BOTTOM_LEFT,
-          autoClose: 3000, // Adjust the duration as needed
-          theme: "null",
-          style : {
-            font: "sans-serif",
-            fontSize : "16px",
-            color: themeMode === "dark" ? "#FFE227" : "#000000",
-            background: themeMode === "dark" ? "#000000" : "#FFE227"
-          }
-        });
+        notify("Sign in successful", themeMode);
       }
 
       if (err) setErrorMessage(err.message);

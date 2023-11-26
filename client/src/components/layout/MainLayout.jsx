@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import userApi from "../../api/modules/user.api";
 import favoriteApi from "../../api/modules/favorite.api";
 import { setListFavorites,setUser } from "../../redux/Slices/userSlice";
-import {toast} from "react-toastify"
+import notify from "./../../utils/notification"
 const MainLayout = () => {
     const dispatch = useDispatch();
     const {user} = useSelector( (state) => state.user); 
@@ -34,17 +34,8 @@ const MainLayout = () => {
         const getFavorites = async() => {
             const {response, err} = await favoriteApi.getList();
             if(response) dispatch(setListFavorites(response));
-            if(err)  toast(err.message, {
-                position: toast.POSITION.BOTTOM_LEFT,
-                autoClose: 3000, // Adjust the duration as needed
-                theme: "null",
-                style : {
-                  font: "sans-serif",
-                  fontSize : "16px",
-                  color: themeMode === "dark" ? "#CD1818" : "#000000",
-                  background: themeMode === "dark" ? "#000000" : "#CD1818"
-                }
-              });
+            console.log(response);
+            if(err)  notify(err.message,themeMode);
         }
         if (user) getFavorites(); 
         if(!user) dispatch(setListFavorites([]))

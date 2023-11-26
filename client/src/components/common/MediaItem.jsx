@@ -96,7 +96,7 @@ const MediaItem = ({ media, mediaType }) => {
               <Stack spacing={{ xs: 1, md: 2 }}>
                 {rate && <CircularRate value={rate} />}
 
-                <Typography>{releaseDate}</Typography>
+                <Typography>{releaseDate}</Typography> 
                 <Typography
                   variant="body1"
                   fontWeight="700"
