@@ -71,7 +71,7 @@ const getDetail = async(req, res) => {
         //populates the media.reviews field by fetching reviews from the database
         media.reviews = await reviewModel.find({ mediaId }).populate("user").sort("-createdAt");
 
-        return responseHandler.ok(res, response);
+        return responseHandler.ok(res, media);
     } catch {
         responseHandler.error(res)
     }

@@ -100,7 +100,7 @@ router.post(
 );
 
 router.delete(
-    "favorites/:favoriteId",
+    "/favorites/:favoriteId",
     tokenMiddleware.auth,
     favoriteController.removeFavorite
 )
