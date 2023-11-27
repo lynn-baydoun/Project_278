@@ -30,7 +30,7 @@ import MediaReview from "../components/common/MediaReview";
 import Container from "../components/common/Container";
 
 
-import notify from "./../utils/notification"
+import { notifySuccess , notifyError} from "../utils/notification";
 
 const MediaDetail = () => {
   const { mediaType, mediaId } = useParams();
@@ -61,7 +61,7 @@ const MediaDetail = () => {
 
       dispatch(setGlobalLoading(false));
 
-      if (err) notify(err.message, themeMode);
+      if (err) notifyError(err.message, themeMode);
     };
 
     getMedia();
@@ -91,11 +91,11 @@ const MediaDetail = () => {
     const { response, err } = await favoriteApi.add(body);
     setOnRequest(false);
 
-    if (err) notify(err.message, themeMode);
+    if (err) notifyError(err.message, themeMode);
     if (response) {
       dispatch(addFavorite(response));
       setIsFavorite(true);
-      notify("Add favorite success", themeMode);
+      notifySuccess("Add favorite success", themeMode);
     }
   };
 
@@ -109,11 +109,11 @@ const MediaDetail = () => {
 
     setOnRequest(false);
 
-    if (err) notify(err.message, themeMode);
+    if (err) notifyError(err.message, themeMode);
     if (response) {
       dispatch(removeFavorite(favorite));
       setIsFavorite(false);
-      notify("Remove favorite success", themeMode);
+      notifySuccess("Remove favorite success", themeMode);
     }
   };
 

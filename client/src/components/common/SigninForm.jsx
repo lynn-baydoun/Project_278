@@ -4,15 +4,12 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { notifyError , notifySuccess} from './../../utils/notification';
 import {useSelector } from 'react-redux/es/hooks/useSelector';
 import * as Yup from "yup";
 import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
 import { setUser } from "../../redux/Slices/userSlice";
-
-import notify from "./../../utils/notification";
 
 const SigninForm = ({ switchAuthState }) => {
   const {themeMode} = useSelector((state) => state.themeMode); 
@@ -45,7 +42,7 @@ const SigninForm = ({ switchAuthState }) => {
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
 
-        notify("Sign in successful", themeMode);
+        notifySuccess("Sign in successful", themeMode);
       }
 
       if (err) setErrorMessage(err.message);

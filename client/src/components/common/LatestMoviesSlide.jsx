@@ -5,8 +5,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { toast } from "react-toastify";
-
+import { notifyError } from "../../utils/notification";
 import { setGlobalLoading } from "../../redux/Slices/globalLoadingSlice";
 import { routesGen } from "../../routes/routes";
 
@@ -34,7 +33,7 @@ const LatestMovieSlide = ({ mediaType, mediaCategory }) => {
       });
 
       if (response) setMovies(response.results);
-      if (err) toast.error(err.message);
+      if (err) notifyError(err.message);
       dispatch(setGlobalLoading(false));
     };
 
@@ -46,7 +45,7 @@ const LatestMovieSlide = ({ mediaType, mediaCategory }) => {
         getMedias();
       }
       if (err) {
-        toast.error(err.message);
+        notifyError(err.message);
         setGlobalLoading(false);
       }
     };

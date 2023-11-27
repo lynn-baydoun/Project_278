@@ -1,6 +1,6 @@
 import {toast} from "react-toastify";
 
-const notify = (message, themeMode) => {
+const notifySuccess = (message, themeMode) => {
     toast(message, {
         position: toast.POSITION.BOTTOM_LEFT,
         autoClose: 3000, // Adjust the duration as needed
@@ -14,4 +14,8 @@ const notify = (message, themeMode) => {
       });
 }
 
-export default notify; 
+const notifyError = (message) =>{
+  toast.error(message);
+}
+
+export {notifySuccess,notifyError}

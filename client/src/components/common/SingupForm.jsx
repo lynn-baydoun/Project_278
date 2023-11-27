@@ -3,15 +3,13 @@ import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import * as Yup from "yup";
 import userApi from "../../api/modules/user.api";
 import { setAuthModalOpen } from "../../redux/Slices/authModalSlice";
 import { setUser } from "../../redux/Slices/userSlice";
 import { useSelector } from 'react-redux';
-import 'react-toastify/dist/ReactToastify.css';
 
-import notify from "./../../utils/notification"
+import { notifySuccess } from '../../utils/notification';
 
 
 const SignupForm = ({ switchAuthState }) => {
@@ -56,7 +54,7 @@ const SignupForm = ({ switchAuthState }) => {
         dispatch(setUser(response));
         dispatch(setAuthModalOpen(false));
         
-        notify("Sign up successful",themeMode);
+        notifySuccess("Sign up successful",themeMode);
       }
 
       if (err) setErrorMessage(err.message);

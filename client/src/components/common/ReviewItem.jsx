@@ -2,7 +2,7 @@ import { LoadingButton } from "@mui/lab";
 import { Box, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from "react-toastify";
+import { notifyError } from "../../utils/notification";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import reviewApi from "../../api/modules/review.api";
@@ -18,7 +18,7 @@ const ReviewItem = ({ review, onRemoved }) => {
 
     const { response, err } = await reviewApi.remove({ reviewId: review.id });
     if (response) onRemoved(review.id);
-    if (err) toast.error(err.message);
+    if (err) notifyError(err.message);
   };
 
   return (

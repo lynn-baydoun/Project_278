@@ -2,15 +2,13 @@ import { LoadingButton } from "@mui/lab";
 import { Box, Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from "react-toastify";
-import dayjs from "dayjs";
+
+import { notifyError, notifySuccess } from "./../../utils/notification";
+
 import { useSelector } from "react-redux";
 import Container from "./Container";
 import reviewApi from "../../api/modules/review.api";
 import TextAvatar from "./TextAvatar";
-
-import notify from "./../../utils/notification";
 
 import ReviewItem from "./ReviewItem";
 
@@ -47,9 +45,9 @@ const MediaReview = ({ reviews, media, mediaType }) => {
     const { response, err } = await reviewApi.add(body);
     setOnRequest(false);
 
-    if (err) toast.error(err.message);
+    if (err) notifyError(err.message);
     if (response) {
-      notify("Post review success", themeMode);
+      notifySuccess("Post review success", themeMode);
 
       setFilteredReviews([...filteredReviews, response]);
       setReviewCount(reviewCount + 1);
@@ -73,7 +71,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
 
     setReviewCount(reviewCount - 1);
 
-    notify("Remove review success",themeMode);
+    notifySuccess("Remove review success",themeMode);
   };
 
   return (

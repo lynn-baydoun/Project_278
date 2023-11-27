@@ -14,7 +14,7 @@ import { setAppState } from "../redux/Slices/appStateSlice";
 import { setGlobalLoading } from "../redux/Slices/globalLoadingSlice";
 
 
-import { toast } from "react-toastify";
+import { notifyError } from "../utils/notification";
 import usePrevious from "../hooks/usePrevious";
 
 const MediaList = () => {
@@ -50,7 +50,7 @@ const MediaList = () => {
       setMediaLoading(false);
       dispatch(setGlobalLoading(false));
 
-      if (err) toast.error(err.message);
+      if (err) notifyError(err.message);
       if (response) {
         if (currPage !== 1) setMedias(m => [...m, ...response.results]);
         else setMedias([...response.results]);
