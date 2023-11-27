@@ -52,7 +52,7 @@ userSchema.methods.validPassword = function(password) {
         64,
         "sha512"
     ).toString("hex");
-    return this.password === hash.toString("hex");
+    return this.password === hash;
 }
 
 const userModel = mongoose.model("User", userSchema);

@@ -65,10 +65,10 @@ const updatePassword = async(req, res) => {
     try {
         //retrieves the user from the database based on the authenticated user's ID
         const { password, newPassword } = req.body;
+        
         const user = await userModel.findById(req.user.id).select("password id salt")
-
         if (!user) return responseHandler.unauthorized(res);
-        if (!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password")
+        if (! user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password")
 
         user.setPassword(newPassword)
 

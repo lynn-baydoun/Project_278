@@ -59,11 +59,7 @@ router.put(
     .isLength({ min: 1 }).withMessage("newPassword with a minimum of 8 characters"),
     body("confirmNewPassword")
     .exists().withMessage("confirmNewPassword is required")
-    .isLength({ min: 1 }).withMessage("confirmNewPassword with a minimum of 8 characters")
-    .custom((value, { req }) => {
-        if (value !== req.body.password) throw new Error("passwords do not match")
-        return true
-    }),
+    .isLength({ min: 1 }).withMessage("confirmNewPassword with a minimum of 8 characters"),
     requestHandler.validate,
     userController.updatePassword
 );
