@@ -2,7 +2,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { notifyError, notifySuccess } from "../utils/notification";
 
@@ -17,7 +17,7 @@ import { removeFavorite } from "../redux/Slices/userSlice";
 
 const FavoriteItem = ({ media, onRemoved }) => {
   const dispatch = useDispatch();
-
+  const {themeMode} = useSelector( (state) => state.themeMode); 
   const [onRequest, setOnRequest] = useState(false);
 
   const onRemove = async () => {
@@ -28,7 +28,7 @@ const FavoriteItem = ({ media, onRemoved }) => {
 
     if (err) notifyError(err.message);
     if (response) {
-      notifySuccess("Remove favorite success");
+      notifySuccess("Remove favorite success", themeMode);
       dispatch(removeFavorite({ mediaId: media.mediaId }));
       onRemoved(media.id);
     }
