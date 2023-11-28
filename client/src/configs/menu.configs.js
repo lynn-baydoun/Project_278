@@ -5,6 +5,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import LockResetOutlinedIcon from "@mui/icons-material/LockResetOutlined";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 const main = [
   {
@@ -51,6 +52,12 @@ const user = [
     path: "/password-update",
     icon: <LockResetOutlinedIcon />,
     state: "password.update"
+  },
+  {
+    display: "profile",
+    path: "/profile",
+    icon: <AccountBoxIcon />,
+    state: "profile"
   }
 ];
 

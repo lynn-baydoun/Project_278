@@ -6,6 +6,7 @@ const reviewEndpoints = {
     remove : reviewId => `reviews/${reviewId}`
 }
 
+
 const reviewApi = {
     add: async({mediaId, mediaType, mediaTitle, mediaPoster, content}) =>{
         try{

@@ -23,9 +23,12 @@ const SignupForm = ({ switchAuthState }) => {
 
   const signupForm = useFormik({
     initialValues: {
-      password: "",
       username: "",
       displayName :"",
+      country : "",
+      dateOfBirth : "",
+      gender :"",
+      password: "",
       confirmPassword : ""
     },
     validationSchema: Yup.object({
@@ -41,11 +44,25 @@ const SignupForm = ({ switchAuthState }) => {
       displayName: Yup.string()
         .min(8, "displayName minimum 8 characters")
         .required("displayName is required"),
-
+      country :   Yup.string()
+        .min(2, "displayName minimum 2 characters")
+        .required("displayName is required"),
+      dateOfBirth : Yup.date()
+        .nullable()
+        .transform((originalValue, originalObject) => {
+          // Transform empty strings to null (if needed)
+        return originalValue === '' ? null : originalValue;
+        })
+        .typeError('Invalid date format')
+        .required('Date of birth is required'),
+      gender : Yup.string()
+        .oneOf(['male', 'female'], 'Gender must be either "male" or "female"')
+        .required('Gender is required'),
     }),
     onSubmit: async values => {
       setErrorMessage(undefined);
       setIsLoginRequest(true);
+      console.log(values);
       const { response, err } = await userApi.signup(values);
       setIsLoginRequest(false);
 
@@ -86,6 +103,39 @@ const SignupForm = ({ switchAuthState }) => {
           color="success"
           error={signupForm.touched.displayName && signupForm.errors.displayName !== undefined}
           helperText={signupForm.touched.displayName && signupForm.errors.displayName}
+        />
+        <TextField
+          type="text"
+          placeholder="country"
+          name="country"
+          fullWidth
+          value={signupForm.values.country}
+          onChange={signupForm.handleChange}
+          color="success"
+          error={signupForm.touched.country && signupForm.errors.country !== undefined}
+          helperText={signupForm.touched.country && signupForm.errors.country}
+        />
+        <TextField
+          type="text"
+          placeholder="gender"
+          name="gender"
+          fullWidth
+          value={signupForm.values.gender}
+          onChange={signupForm.handleChange}
+          color="success"
+          error={signupForm.touched.gender && signupForm.errors.gender !== undefined}
+          helperText={signupForm.touched.gender && signupForm.errors.gender}
+        />
+        <TextField
+          type="date"
+          placeholder="date of birth"
+          name="dateOfBirth"
+          fullWidth
+          value={signupForm.values.dateOfBirth}
+          onChange={signupForm.handleChange}
+          color="success"
+          error={signupForm.touched.dateOfBirth && signupForm.errors.dateOfBirth !== undefined}
+          helperText={signupForm.touched.dateOfBirth && signupForm.errors.dateOfBirth}
         />
         <TextField
           type="password"

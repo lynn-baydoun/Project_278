@@ -69,7 +69,7 @@ const MediaItem = ({ media, mediaType }) => {
               className="media-play-btn"
               variant="contained"
               startIcon={<PlayArrowIcon />}
-              sx={{
+              sx={ {
                 display: { xs: "none", md: "flex" },
                 opacity: 0,
                 transition: "all 0.3s ease",
@@ -78,7 +78,7 @@ const MediaItem = ({ media, mediaType }) => {
                 left: "50%",
                 transform: "translate(-50%, -50%)",
                 "& .MuiButton-startIcon": { marginRight: "-4px" }
-              }}
+              } }
             />
             <Box
               className="media-info"

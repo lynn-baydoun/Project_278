@@ -6,6 +6,7 @@ const userEndpoints = {
     signup :  "/user/signup",
     getInfo : "/user/info",
     passwordUpdate: "/user/update-password", 
+    updateUserDetails : "/user/updateUserDetails", 
 }
 
 const userApi = {
@@ -18,11 +19,29 @@ const userApi = {
             return {response}; 
         }catch(err) {return {err}};
     },
-    signup : async ({username,password, confirmPassword, displayName}) =>{
+    signinGoogle : async ({googleAccessToken}) =>{
+        try{
+            const response = await publicClient.post(
+                userEndpoints.singing,
+                {googleAccessToken : googleAccessToken}
+            );
+            return {response}; 
+        }catch(err) {return {err}};
+    },
+    signup : async ({username,password, confirmPassword, displayName ,gender, country, dateOfBirth}) =>{
         try{
             const response = await publicClient.post(
                 userEndpoints.signup,
-                {username,password, confirmPassword, displayName}
+                {username,password, confirmPassword, displayName,gender, country, dateOfBirth}
+            );
+            return {response};
+        }catch(err) {return {err}};
+    },
+    signupGoogle : async ({googleAccessToken}) =>{
+        try{
+            const response = await publicClient.post(
+                userEndpoints.signup,
+                {googleAccessToken : googleAccessToken}
             );
             return {response};
         }catch(err) {return {err}};
@@ -41,7 +60,16 @@ const userApi = {
             );
             return {response};
         }catch(err) {return {err}};
-    }   
+    },
+    updateUserDetail : async ({displayName, country, dateOfBirth, gender}) => {
+        try{
+            const response = await privateClient.put(
+                userEndpoints.updateUserDetails,
+                {displayName, country, dateOfBirth, gender}
+            )
+            return {response};
+        } catch(err) {return {err}};
+    }
 };
 
 export default userApi;

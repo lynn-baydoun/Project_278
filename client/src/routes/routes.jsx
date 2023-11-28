@@ -6,10 +6,12 @@ import MediaList from "../pages/MediaList";
 import MediaSearch from "../pages/MediaSearch";
 import PasswordUpdate from "../pages/PasswordUpdate";
 import ReviewList from "../pages/ReviewList";
-import ProtectedPage from "../components/common/ProtectedPage";
+import Profile from "../pages/Profile";
+import ProtectedPage from "../components/common/ProtectedPage"; 
 
 export const routesGen = {
   home: "/",
+  profile : "/profile",
   mediaList: (type) => `/${type}`,
   mediaDetail: (type, id) => `/${type}/${id}`,
   mediaSearch: "/search",
@@ -34,6 +36,14 @@ const routes = [
     path: "/search",
     element: <MediaSearch />,
     state: "search"
+  },
+  {
+    path : "/profile",
+    element : (
+    <ProtectedPage>
+      <Profile />
+    </ProtectedPage>),
+    state : "profile"
   },
   {
     path: "/password-update",

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { notifyError , notifySuccess} from './../../utils/notification';
+import { notifySuccess} from './../../utils/notification';
 import {useSelector } from 'react-redux/es/hooks/useSelector';
 import * as Yup from "yup";
 import userApi from "../../api/modules/user.api";
