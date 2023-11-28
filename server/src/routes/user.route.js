@@ -4,7 +4,7 @@ import favoriteController from "../controllers/favorite.controller.js";
 import userController from "../controllers/user.controller.js";
 import requestHandler from "../handlers/request.handler.js";
 import tokenMiddleware from "../middlewares/token.middleware.js";
-
+import moment from "moment"
 const router = express.Router();
 
 //uses express-validator middleware to validate the incoming request body
@@ -26,9 +26,28 @@ router.post(
         if (value !== req.body.password) throw new Error("passwords do not match")
         return true
     }),
+
     body("displayName")
     .exists().withMessage("display name is required")
     .isLength({ min: 1 }).withMessage("display name with a minimum of 8 characters"),
+
+    body("gender")
+    .exists().withMessage("Gender name is required")
+    .isIn(['male', 'female']).withMessage('Gender must be either male or female'),
+
+    body("country")
+    .exists().withMessage("country name is required")
+    .isLength({ min: 1 }).withMessage("country name with a minimum of 8 characters"),
+
+    body("dateOfBirth")
+    .exists().withMessage("Date of birth is required")
+    .custom((value) => {
+        // Check if the value can be parsed by moment.js
+        if (!moment(value, moment.ISO_8601, true).isValid()) {
+          throw new Error('Invalid date format. Accepted formats include YYYY-MM-DD, MM/DD/YYYY, etc.');
+        }
+        return true;
+      }),
     //if validation passes
     //to execute the validation
     //if there are validation errors, it will be handled by the requestHandler.validate
@@ -62,6 +81,40 @@ router.put(
     .isLength({ min: 1 }).withMessage("confirmNewPassword with a minimum of 8 characters"),
     requestHandler.validate,
     userController.updatePassword
+);
+
+router.put(
+    "/updateUserDetails",
+    //for authentication using a JWT
+    tokenMiddleware.auth,
+    body("username")
+    .exists().withMessage("username is required")
+    //checks if the username has a minimum length of 8 characters
+    .isLength({ min: 1 }).withMessage("username with a minimum of 8 characters")
+    ,
+
+    body("displayName")
+    .exists().withMessage("display name is required")
+    .isLength({ min: 1 }).withMessage("display name with a minimum of 8 characters"),
+
+    body("gender")
+    .exists().withMessage("Gender name is required")
+    .isIn(['male', 'female']).withMessage('Gender must be either male or female'),
+
+    body("country")
+    .exists().withMessage("country name is required")
+    .isLength({ min: 1 }).withMessage("country name with a minimum of 8 characters"),
+
+    body("dateOfBirth")
+    .exists().withMessage("Date of birth is required")
+    .custom((value) => {
+        // Check if the value can be parsed by moment.js
+        if (!moment(value, moment.ISO_8601, true).isValid()) {
+          throw new Error('Invalid date format. Accepted formats include YYYY-MM-DD, MM/DD/YYYY, etc.');
+        }
+        return true;
+    }),
+    userController.updateUserDetails
 );
 
 router.get(

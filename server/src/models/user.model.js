@@ -5,7 +5,6 @@
 import mongoose from 'mongoose';
 import modelOptions from './model.options.js'
 import crypto from 'crypto';
-import  util from "util"
 
 //define a schema 
 const userSchema = new mongoose.Schema({
@@ -18,6 +17,19 @@ const userSchema = new mongoose.Schema({
     displayName: {
         type: String,
         required: true
+    },
+    gender : {
+        type : String, 
+        enum: ['male', 'female'],
+        required : true
+    },
+    dateOfBirth : {
+        type : String, 
+        required: true, 
+    },
+    country : {
+        type : String, 
+        required:  true
     },
     password: {
         type: String,
