@@ -1,6 +1,7 @@
 import express from "express";
 import { body } from "express-validator";
 import favoriteController from "../controllers/favorite.controller.js";
+import topPickController from "../controllers/topPickController.js";
 import userController from "../controllers/user.controller.js";
 import requestHandler from "../handlers/request.handler.js";
 import tokenMiddleware from "../middlewares/token.middleware.js";
@@ -153,6 +154,37 @@ router.delete(
     "/favorites/:favoriteId",
     tokenMiddleware.auth,
     favoriteController.removeFavorite
+)
+
+router.get(
+    '/topPicks',
+    tokenMiddleware.auth,
+    topPickController.getTopPickOfUser
+);
+
+router.post(
+    '/topPicks',
+    tokenMiddleware.auth,
+    body('mediaType')
+    .exists().withMessage("media type is required")
+    .custom(type => ["movie", "tv"].includes(type)).withMessage("media type invalid"),
+    body("mediaId")
+    .exists().withMessage("mediaId is required")
+    .isLength({ min: 1 }).withMessage("mediaId cannot be empty"),
+    body("mediaTitle")
+    .exists().withMessage("mediaTitle is required"),
+    body("mediaPoster")
+    .exists().withMessage("mediaPoster is required"),
+    body("mediaRate")
+    .exists().withMessage("mediaRate is required"),
+    requestHandler.validate,
+    topPickController.addTopPick
+);
+
+router.delete(
+    "/topPicks/:topPickId",
+    tokenMiddleware.auth,
+    topPickController.removeTopPick
 )
 
 export default router;
