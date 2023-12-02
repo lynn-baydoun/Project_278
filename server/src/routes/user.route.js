@@ -114,6 +114,7 @@ router.put(
         }
         return true;
     }),
+    requestHandler.validate,
     userController.updateUserDetails
 );
 

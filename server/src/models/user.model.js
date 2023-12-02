@@ -9,7 +9,6 @@ import crypto from 'crypto';
 //define a schema 
 const userSchema = new mongoose.Schema({
     username: {
-
         type: String,
         required: true,
         unique: true

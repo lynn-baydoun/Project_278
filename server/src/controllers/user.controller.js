@@ -79,7 +79,8 @@ const signupGoogle = async(req, res) => {
 const signin = async(req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await userModel.findOne({ username }).select("username password salt id displayName");
+        
+        const user = await userModel.findOne({ username }).select("username password salt id displayName dateOfBirth");
         if (!user) return responseHandler.badRequest(res, "User does not exist");
         if (! await user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
 
@@ -92,6 +93,7 @@ const signin = async(req, res) => {
         responseHandler.created(res, {
             token,
             ...user._doc,
+            createdAt : Date.now(),
             id: user.id
         })
     } catch (err){
@@ -105,10 +107,9 @@ const updatePassword = async(req, res) => {
         //retrieves the user from the database based on the authenticated user's ID
         const { password, newPassword } = req.body;
         
-        const user = await userModel.findById(req.user.id).select("password id salt")
+        const user = await userModel.findById(req.user.id).select("password id salt");
         if (!user) return responseHandler.unauthorized(res);
         if (! user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password")
-
         user.setPassword(newPassword)
 
         await user.save()
