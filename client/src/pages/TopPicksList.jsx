@@ -10,12 +10,12 @@ import MediaItem from "../components/common/MediaItem";
 import Container from "../components/common/Container";
 
 import uiConfigs from "../configs/ui.configs";
-import favoriteApi from "../api/modules/favorite.api";
+import topPickApi from "../api/modules/topPick.api";
 
 import { setGlobalLoading } from "../redux/Slices/globalLoadingSlice";
-import { removeFavorite } from "../redux/Slices/userSlice";
+import { removeTopPick } from "../redux/Slices/userSlice";
 
-const FavoriteItem = ({ media, onRemoved }) => {
+const TopPickItem = ({ media, onRemoved }) => {
   const dispatch = useDispatch();
   const {themeMode} = useSelector( (state) => state.themeMode); 
   const [onRequest, setOnRequest] = useState(false);
@@ -23,13 +23,13 @@ const FavoriteItem = ({ media, onRemoved }) => {
   const onRemove = async () => {
     if (onRequest) return;
     setOnRequest(true);
-    const { response, err } = await favoriteApi.remove({ favoriteId: media.id });
+    const { response, err } = await topPickApi.remove({ topPickId: media.id });
     setOnRequest(false);
 
     if (err) notifyError(err.message);
     if (response) {
-      notifySuccess("Item removed from watchlist", themeMode);
-      dispatch(removeFavorite({ mediaId: media.mediaId }));
+      notifySuccess("Item removed from top Picks", themeMode);
+      dispatch(removeTopPick({ mediaId: media.mediaId }));
       onRemoved(media.id);
     }
   };
@@ -50,7 +50,7 @@ const FavoriteItem = ({ media, onRemoved }) => {
   </>);
 };
 
-const FavoriteList = () => {
+const TopPicksList = () => {
   const [medias, setMedias] = useState([]);
   const [filteredMedias, setFilteredMedias] = useState([]);
   const [page, setPage] = useState(1);
@@ -61,9 +61,9 @@ const FavoriteList = () => {
   const skip = 8;
 
   useEffect(() => {
-    const getFavorites = async () => {
+    const getTopPicks = async () => {
       dispatch(setGlobalLoading(true));
-      const { response, err } = await favoriteApi.getList();
+      const { response, err } = await topPickApi.getList();
       dispatch(setGlobalLoading(false));
 
       if (err) notifyError(err.message);
@@ -74,7 +74,7 @@ const FavoriteList = () => {
       }
     };
 
-    getFavorites();
+    getTopPicks();
   }, [dispatch]);
 
   const onLoadMore = () => {
@@ -91,11 +91,11 @@ const FavoriteList = () => {
 
   return (
     <Box sx={{ ...uiConfigs.style.mainContent }}>
-      <Container header={`Your Watchlist (${count})`}>
+      <Container header={`Your Top Picks (${count})`}>
         <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
           {filteredMedias.map((media, index) => (
             <Grid item xs={6} sm={4} md={3} key={index}>
-              <FavoriteItem media={media} onRemoved={onRemoved} />
+              <TopPickItem media={media} onRemoved={onRemoved} />
             </Grid>
           ))}
         </Grid>
@@ -107,4 +107,4 @@ const FavoriteList = () => {
   );
 };
 
-export default FavoriteList;
+export default TopPicksList;

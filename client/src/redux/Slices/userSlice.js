@@ -5,6 +5,7 @@ export const userSlice = createSlice({
     initialState: {
         user: null,
         listFavorites : [],
+        listTopPicks : []
     },
     reducers: {
         setUser: (state, action) => {
@@ -23,6 +24,16 @@ export const userSlice = createSlice({
         },
         addFavorite: (state, action) => {
             state.listFavorites = [action.payload, ...state.listFavorites]
+        },
+        setListTopPicks: (state, action) => {
+            state.listTopPicks = action.payload;
+        },
+        removeTopPick: (state, action) => {
+            const {mediaId} = action.payload;
+            state.listTopPicks =  [...state.listTopPicks].filter(f => f.mediaId.toString() !== mediaId.toString());
+        },
+        addTopPick: (state, action) => {
+            state.listTopPicks = [action.payload, ...state.listTopPicks]
         }
     }
 })
@@ -31,7 +42,10 @@ export const {
     setUser,
     setListFavorites,
     removeFavorite,
-    addFavorite
+    addFavorite,
+    setListTopPicks,
+    removeTopPick,
+    addTopPick
 } = userSlice.actions;
 
 export default userSlice.reducer;

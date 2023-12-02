@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import {Typography, TextField} from "@mui/material";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 
@@ -12,13 +12,12 @@ import userApi from "../api/modules/user.api";
 
 import Container from "../components/common/Container";
 import uiConfigs from "../configs/ui.configs";
-import { red } from "@mui/material/colors";
 import "./style.css";
 
-const FavoriteList = () => {
+const Profile = () => {
   const {user} = useSelector ((state) => state.user); 
   const {themeMode} = useSelector ( (state)=>  state.themeMode);
-  const [editMode, setEditMode] = useState(true)
+  const [editMode, setEditMode] = useState(false)
   const [onRequest, setOnRequest] = useState(false);
 
   const [content, setContent] = useState({
@@ -152,5 +151,5 @@ const FavoriteList = () => {
   );
 };
 
-export default FavoriteList;
+export default Profile;
 

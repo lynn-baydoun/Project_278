@@ -10,7 +10,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import userApi from "../../api/modules/user.api";
 import favoriteApi from "../../api/modules/favorite.api";
-import { setListFavorites,setUser } from "../../redux/Slices/userSlice";
+import topPickApi from "../../api/modules/topPick.api";
+import { setListFavorites,setUser, setListTopPicks } from "../../redux/Slices/userSlice";
 import { notifySuccess } from "../../utils/notification";
 const MainLayout = () => {
     const dispatch = useDispatch();
@@ -36,8 +37,19 @@ const MainLayout = () => {
             if(response) dispatch(setListFavorites(response));
             if(err)  notifySuccess(err.message,themeMode);
         }
-        if (user) getFavorites(); 
-        if(!user) dispatch(setListFavorites([]))
+        const getTopPicks = async() => {
+            const {response, err} = await topPickApi.getList();
+            if(response) dispatch(setListTopPicks(response));
+            if(err)  notifySuccess(err.message,themeMode);
+        }
+        if (user) {
+            getFavorites();
+            getTopPicks(); 
+        }
+        if(!user) {
+            dispatch(setListFavorites([]))
+            dispatch(setListTopPicks([]));
+        }
     },[user,dispatch])
 
     return (
