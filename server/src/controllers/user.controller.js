@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
 const signup = async(req, res) => {
     try {
         //extracting username, password, displayName from req.body
-        const { username, password, displayName,dateOfBirth, country, gender } = req.body;
+        const { username, password, displayName, dateOfBirth, country, gender } = req.body;
 
         const checkUser = await userModel.findOne({ username });
 
@@ -35,7 +35,7 @@ const signup = async(req, res) => {
         responseHandler.created(res, {
             token,
             ...user._doc,
-            createdAt : Date.now(),
+            createdAt: Date.now(),
             id: user.id
         })
     } catch {
@@ -48,7 +48,7 @@ const signupGoogle = async(req, res) => {
         //extracting username, password, displayName from req.body
         const { googleAccessToken } = req.body;
 
-        const response = await secondPartyLogin({ googleAccessToken: googleAccessToken});
+        const response = await secondPartyLogin({ googleAccessToken: googleAccessToken });
 
         const checkUser = await userModel.findOne({ username });
 
@@ -71,7 +71,7 @@ const signupGoogle = async(req, res) => {
         responseHandler.created(res, {
             token,
             ...user._doc,
-            createdAt : Date.now(),
+            createdAt: Date.now(),
             id: user.id
         })
     } catch {
@@ -86,7 +86,7 @@ const signin = async(req, res) => {
         
         const user = await userModel.findOne({ username }).select("username password salt id displayName dateOfBirth");
         if (!user) return responseHandler.badRequest(res, "User does not exist");
-        if (! await user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
+        if (!await user.validPassword(password)) return responseHandler.badRequest(res, "Wrong password");
 
         const token = jsonwebtoken.sign({ data: user.id },
             process.env.TOKEN_SECRET, { expiresIn: "24h" }
@@ -100,7 +100,7 @@ const signin = async(req, res) => {
             createdAt : Date.now(),
             id: user.id
         })
-    } catch (err){
+    } catch (err) {
         responseHandler.error(res)
     }
 };
@@ -127,7 +127,7 @@ const updatePassword = async(req, res) => {
 const updateUserDetails = async(req, res) => {
     try {
         //retrieves the user from the database based on the authenticated user's ID
-        const { displayName, country,gender, dateOfBirth } = req.body;
+        const { displayName, country, gender, dateOfBirth } = req.body;
 
         const user = await userModel.findById(req.user.id).select("displayName gender country dateOfBirth");
         if (!user) return responseHandler.badRequest(res, "user does not exist");
@@ -139,16 +139,16 @@ const updateUserDetails = async(req, res) => {
 
         await user.save()
         responseHandler.ok(res);
-    } catch (err){
+    } catch (err) {
         responseHandler.error(res)
     }
 };
 
 const getInfo = async(req, res) => {
-    
+
     try {
         const user = await userModel.findById(req.user.id);
-        if (!user) return responseHandler.notfound(res); 
+        if (!user) return responseHandler.notfound(res);
         responseHandler.ok(res, user);
     } catch {
         responseHandler.error(res)
