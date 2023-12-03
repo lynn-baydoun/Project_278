@@ -6,6 +6,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import LockResetOutlinedIcon from "@mui/icons-material/LockResetOutlined";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 
 const main = [
   {
@@ -36,10 +37,16 @@ const main = [
 
 const user = [
   {
-    display: "favorites",
-    path: "/favorites",
+    display: "watchlist",
+    path: "/watchlist",
     icon: <FavoriteBorderOutlinedIcon />,
     state: "favorite"
+  },
+  {
+    display: "Top Picks",
+    path: "/topPicks",
+    icon: <StarBorderOutlinedIcon />,
+    state: "topPicks"
   },
   {
     display: "reviews",

@@ -7,6 +7,7 @@ import MediaSearch from "../pages/MediaSearch";
 import PasswordUpdate from "../pages/PasswordUpdate";
 import ReviewList from "../pages/ReviewList";
 import Profile from "../pages/Profile";
+import TopPicksList from "../pages/TopPicksList";
 import ProtectedPage from "../components/common/ProtectedPage"; 
 
 export const routesGen = {
@@ -17,6 +18,7 @@ export const routesGen = {
   mediaSearch: "/search",
   person: (id) => `/person/${id}`,
   favoriteList: "/favorites",
+  topPickList: "/topPicks",
   reviewList: "/reviews",
   passwordUpdate: "password-update"
 };
@@ -55,13 +57,22 @@ const routes = [
     state: "password.update"
   },
   {
-    path: "/favorites",
+    path: "/watchlist",
     element: (
       <ProtectedPage>
         <FavoriteList />
       </ProtectedPage>
     ),
     state: "favorites"
+  },
+  {
+    path: "/topPicks",
+    element: (
+      <ProtectedPage>
+        <TopPicksList />
+      </ProtectedPage>
+    ),
+    state: "topPicks"
   },
   {
     path: "/reviews",

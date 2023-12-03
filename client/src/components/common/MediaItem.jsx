@@ -6,12 +6,15 @@ import tmdbConfigs from "../../api/configs/tmdb.configs";
 import uiConfigs from "../../configs/ui.configs";
 import { routesGen } from "../../routes/routes";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import StarIcon from '@mui/icons-material/Star';
 import CircularRate from "./CircularRate";
 import { useSelector } from "react-redux";
 import favoriteUtils from "../../utils/favorite.utils";
+import topPickUtils from "../../utils/topPick.utils";
 
 const MediaItem = ({ media, mediaType }) => {
-  const { listFavorites } = useSelector((state) => state.user);
+  const {listFavorites} = useSelector((state) => state.user);
+  const {listTopPicks}  = useSelector ((state) => state.user);
 
   const [title, setTitle] = useState("");
   const [posterPath, setPosterPath] = useState("");
@@ -44,8 +47,21 @@ const MediaItem = ({ media, mediaType }) => {
         {/* movie or tv item */}
         {mediaType !== "people" && (
           <>
+
             {favoriteUtils.check({ listFavorites , mediaId: media.id }) && (
               <FavoriteIcon
+                color="primary"
+                sx={{
+                  position: "absolute",
+                  top: 2,
+                  right: 2,
+                  fontSize: "2rem"
+                }}
+              />
+            )}
+            
+            {topPickUtils.check({ listTopPicks , mediaId: media.id }) && (
+              <StarIcon
                 color="primary"
                 sx={{
                   position: "absolute",

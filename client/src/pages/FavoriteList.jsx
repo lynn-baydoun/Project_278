@@ -28,7 +28,7 @@ const FavoriteItem = ({ media, onRemoved }) => {
 
     if (err) notifyError(err.message);
     if (response) {
-      notifySuccess("Remove favorite success", themeMode);
+      notifySuccess("Item removed from watchlist", themeMode);
       dispatch(removeFavorite({ mediaId: media.mediaId }));
       onRemoved(media.id);
     }
@@ -91,7 +91,7 @@ const FavoriteList = () => {
 
   return (
     <Box sx={{ ...uiConfigs.style.mainContent }}>
-      <Container header={`Your favorites (${count})`}>
+      <Container header={`Your Watchlist (${count})`}>
         <Grid container spacing={1} sx={{ marginRight: "-8px!important" }}>
           {filteredMedias.map((media, index) => (
             <Grid item xs={6} sm={4} md={3} key={index}>

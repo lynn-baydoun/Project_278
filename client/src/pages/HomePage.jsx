@@ -12,20 +12,24 @@ const HomePage = () => {
       <LatestMoviesSlide mediaType={tmdbConfigs.mediaType.movie} mediaCategory={tmdbConfigs.mediaCategory.popular} />
 
       <Box marginTop="-4rem" sx={{ ...uiConfigs.style.mainContent }}>
-        <Container header="popular movies">
+        <Container header="Featured Today movies">
           <MediaSlide mediaType={tmdbConfigs.mediaType.movie} mediaCategory={tmdbConfigs.mediaCategory.popular} />
         </Container>
 
-        <Container header="popular series">
+        <Container header="Featured Today series">
           <MediaSlide mediaType={tmdbConfigs.mediaType.tv} mediaCategory={tmdbConfigs.mediaCategory.popular} />
         </Container>
 
-        <Container header="top rated movies">
+        <Container header="Top US box office">
           <MediaSlide mediaType={tmdbConfigs.mediaType.movie} mediaCategory={tmdbConfigs.mediaCategory.top_rated} />
         </Container>
 
-        <Container header="top rated series">
+        <Container header="Top rated series">
           <MediaSlide mediaType={tmdbConfigs.mediaType.tv} mediaCategory={tmdbConfigs.mediaCategory.top_rated} />
+        </Container>
+
+        <Container header="Coming Soon">
+          <MediaSlide mediaType={tmdbConfigs.mediaType.movie} mediaCategory={'upcoming'} />
         </Container>
       </Box>
     </>

@@ -8,8 +8,8 @@ import crypto from 'crypto';
 
 //define a schema 
 const userSchema = new mongoose.Schema({
+    profileImage: String,
     username: {
-
         type: String,
         required: true,
         unique: true
@@ -21,15 +21,12 @@ const userSchema = new mongoose.Schema({
     gender : {
         type : String, 
         enum: ['male', 'female'],
-        required : true
     },
     dateOfBirth : {
         type : String, 
-        required: true, 
     },
     country : {
         type : String, 
-        required:  true
     },
     password: {
         type: String,

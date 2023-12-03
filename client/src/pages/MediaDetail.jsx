@@ -1,5 +1,7 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import StarIcon from '@mui/icons-material/Star';
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 import { LoadingButton } from "@mui/lab";
@@ -15,10 +17,11 @@ import uiConfigs from "../configs/ui.configs";
 import tmdbConfigs from "../api/configs/tmdb.configs";
 import mediaApi from "../api/modules/media.api";
 import favoriteApi from "../api/modules/favorite.api";
+import topPickApi from "../api/modules/topPick.api";
 
 import { setGlobalLoading } from "../redux/Slices/globalLoadingSlice";
 import { setAuthModalOpen } from "../redux/Slices/authModalSlice";
-import { addFavorite, removeFavorite } from "../redux/Slices/userSlice";
+import { addFavorite, removeFavorite, addTopPick, removeTopPick } from "../redux/Slices/userSlice";
 
 import CastSlide from "../components/common/CastSlide";
 import MediaVideosSlide from "../components/common/MediaVideosSlide";
@@ -35,11 +38,12 @@ import { notifySuccess , notifyError} from "../utils/notification";
 const MediaDetail = () => {
   const { mediaType, mediaId } = useParams();
 
-  const { user, listFavorites } = useSelector((state) => state.user);
+  const { user, listFavorites, listTopPicks } = useSelector((state) => state.user);
   const {themeMode}  = useSelector((state) => state.themeMode);
 
   const [media, setMedia] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isTopPick, setIsTopPick] = useState(false);
   const [onRequest, setOnRequest] = useState(false);
   const [genres, setGenres] = useState([]);
 
@@ -56,6 +60,7 @@ const MediaDetail = () => {
       if (response) {
         setMedia(response);
         setIsFavorite(response.isFavorite);
+        setIsTopPick(response.isTopPick);
         setGenres(response.genres.splice(0, 2));
       }
 
@@ -95,7 +100,39 @@ const MediaDetail = () => {
     if (response) {
       dispatch(addFavorite(response));
       setIsFavorite(true);
-      notifySuccess("Add favorite success", themeMode);
+      notifySuccess("Item added to Watchlist", themeMode);
+    }
+  };
+
+  const onTopPickClick = async () => {
+    if (!user) return dispatch(setAuthModalOpen(true));
+
+    //Prevent adding and removing at the same time
+    if (onRequest) return;
+
+    if (isTopPick) {
+      onRemoveTopPick();
+      return;
+    }
+
+    setOnRequest(true);
+
+    const body = {
+      mediaId: media.id,
+      mediaTitle: media.title || media.name,
+      mediaType: mediaType,
+      mediaPoster: media.poster_path,
+      mediaRate: media.vote_average
+    };
+
+    const { response, err } = await topPickApi.add(body);
+    setOnRequest(false);
+
+    if (err) notifyError(err.message, themeMode);
+    if (response) {
+      dispatch(addTopPick(response));
+      setIsTopPick(true);
+      notifySuccess("Item added to Top Picks", themeMode);
     }
   };
 
@@ -113,7 +150,25 @@ const MediaDetail = () => {
     if (response) {
       dispatch(removeFavorite(favorite));
       setIsFavorite(false);
-      notifySuccess("Remove favorite success", themeMode);
+      notifySuccess("Item removed from Watchlist", themeMode);
+    }
+  };
+
+  const onRemoveTopPick = async () => {
+    if (onRequest) return;
+    setOnRequest(true);
+
+    const topPick = listTopPicks.find(e => e.mediaId.toString() === media.id.toString());
+
+    const { response, err } = await topPickApi.remove({ topPickId: topPick.id });
+
+    setOnRequest(false);
+
+    if (err) notifyError(err.message, themeMode);
+    if (response) {
+      dispatch(removeTopPick(topPick));
+      setIsTopPick(false);
+      notifySuccess("Item removed from TopPicks", themeMode);
     }
   };
 
@@ -203,6 +258,18 @@ const MediaDetail = () => {
                       loadingPosition="start"
                       loading={onRequest}
                       onClick={onFavoriteClick}
+                    />
+                    <LoadingButton
+                      variant="text"
+                      sx={{
+                        width: "max-content",
+                        "& .MuiButon-starIcon": { marginRight: "0" }
+                      }}
+                      size="large"
+                      startIcon={isTopPick ? <StarIcon /> : <StarBorderOutlinedIcon />}
+                      loadingPosition="start"
+                      loading={onRequest}
+                      onClick={onTopPickClick}
                     />
                     <Button
                       variant="contained"
