@@ -1,9 +1,8 @@
 //client for making HTTP requests to The Movie Database (TMDb) API using the Axios library
 import axiosClient from '../axios/axios.client.js';
 import tmdbEndpoints from './tmdb.endpoints.js';
-
 const tmdbApi = {
-    //Axios is used to send a GET request to the corresponding TMDb API endpoint,  returns a promise that resolves to the response data received from the TMDb API.
+    //Axios is used to send a GET request to the corresponding TMDb API endpoint, returns a promise that resolves to the response data received from the TMDb API.
     mediaList: async({ mediaType, mediaCategory, page }) => axiosClient.get(
         tmdbEndpoints.mediaList({ mediaType, mediaCategory, page })
     ),
