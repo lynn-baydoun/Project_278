@@ -27,6 +27,30 @@ const Footer = () => {
                 {item.display}
               </Button>
             ))}
+            <Button
+                key={4}
+                sx={{ color: "inherit" }}
+                component={Link}
+                to={"https://www.imdb.com/pressroom/?ref_=ft_pr"}
+              >
+                {"Pressroom"}
+            </Button>
+            <Button
+                key={5}
+                sx={{ color: "inherit" }}
+                component={Link}
+                to={"https://www.imdb.com/conditions?ref_=ft_cou"}
+              >
+                {"Conditions of Use"}
+            </Button>
+            <Button
+                key={6}
+                sx={{ color: "inherit" }}
+                component={Link}
+                to={"https://www.imdb.com/privacy?ref_=ft_pvc"}
+              >
+                {"Privacy Policy"}
+            </Button>
           </Box>
         </Stack>
       </Paper>

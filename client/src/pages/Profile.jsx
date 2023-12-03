@@ -23,7 +23,7 @@ const Profile = () => {
   const [content, setContent] = useState({
     displayName : user.displayName,
     country : user.country,
-    dateOfBirth: user.dateOfBirth.toString().substring(0,10),
+    dateOfBirth: (user.dateOfBirth) ? user.dateOfBirth.toString().substring(0,10) : '',
     gender : user.gender
   })
 
@@ -107,7 +107,7 @@ const Profile = () => {
       </Container>
       <Container header={`Date of birth `}>
         { !editMode && <Typography fontWeight="700" variant="h5">
-          {user.dateOfBirth.toString().substring(0,10)}
+          {(user.dateOfBirth) ? user.dateOfBirth.toString().substring(0,10) : 'not set'}
         </Typography>}
         {editMode && 
         <TextField
