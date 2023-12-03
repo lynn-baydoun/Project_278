@@ -4,7 +4,7 @@ import tmdbConfig from "./tmdb.config.js";
 const tmdbEndpoints = {
     // Generates a URL for fetching a list of media items based on parameters like mediaType , mediaCategory, and page
     mediaList: ({ mediaType, mediaCategory, page }) => tmdbConfig.getUrl(
-        `${mediaType}/${mediaCategory}`, page
+        `${mediaType}/${mediaCategory}`, {page}
     ),
     mediaDetail: ({ mediaType, mediaId }) => tmdbConfig.getUrl(
         `${mediaType}/${mediaId}`

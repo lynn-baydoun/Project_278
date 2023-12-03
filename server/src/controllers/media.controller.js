@@ -8,7 +8,7 @@ import tokenMiddleware from "../middlewares/token.middleware.js"
 // handles requests to retrieve a list of media items from TMDB; extracts parameters from the request(page, mediaType, and mediaCategory) calls tmdbApi.mediaList to fetch the list from TMDB and sends the response using the responseHandler
 const getList = async(req, res) => {
     try {
-        const { page } = req.body;
+        const { page } = req.query;
         const { mediaType, mediaCategory } = req.params;
         const response = await tmdbApi.mediaList({ mediaType, mediaCategory, page });
         return responseHandler.ok(res, response);
@@ -23,7 +23,7 @@ const getGenres = async(req, res) => {
         const response = await tmdbApi.mediaGenres({ mediaType });
         return responseHandler.ok(res, response);
 
-    } catch {
+    } catch (err){
         responseHandler.error(res)
     }
 };
@@ -71,7 +71,7 @@ const getDetail = async(req, res) => {
         //populates the media.reviews field by fetching reviews from the database
         media.reviews = await reviewModel.find({ mediaId }).populate("user").sort("-createdAt");
 
-        return responseHandler.ok(res, response);
+        return responseHandler.ok(res, media);
     } catch {
         responseHandler.error(res)
     }
