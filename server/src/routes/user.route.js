@@ -5,7 +5,9 @@ import topPickController from "../controllers/topPickController.js";
 import userController from "../controllers/user.controller.js";
 import requestHandler from "../handlers/request.handler.js";
 import tokenMiddleware from "../middlewares/token.middleware.js";
+import upload from "./../middlewares/upload.middleware.js"
 import moment from "moment"
+import responseHandler from "../handlers/response.handler.js";
 const router = express.Router();
 
 //uses express-validator middleware to validate the incoming request body
@@ -185,6 +187,25 @@ router.delete(
     "/topPicks/:topPickId",
     tokenMiddleware.auth,
     topPickController.removeTopPick
+)
+
+router.post(
+    "/file/upload",
+    //tokenMiddleware.auth,
+    upload.any(), upload.fields([{ name: "file", maxCount: 1 }]),
+    userController.uploadImage
+);
+
+router.get(
+    "file/:filename",
+    tokenMiddleware.auth,
+    userController.getImage
+)
+
+router.delete(
+    "file/:filename",
+    tokenMiddleware.auth,
+    userController.deleteImage
 )
 
 export default router;

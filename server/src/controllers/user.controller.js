@@ -2,6 +2,10 @@ import userModel from "../models/user.model.js"
 import jsonwebtoken from "jsonwebtoken"
 import responseHandler from "../handlers/response.handler.js"
 import secondPartyLogin from "../secondPartyLogin/secondPartyLogin.api.js";
+import Grid from "gridfs-stream";
+import mongoose from 'mongoose';
+
+
 const signup = async(req, res) => {
     try {
         //extracting username, password, displayName from req.body
@@ -26,7 +30,7 @@ const signup = async(req, res) => {
         //excludes sensitive data such as the password and salt from the response
         const token = jsonwebtoken.sign({ data: user.id },
             process.env.TOKEN_SECRET, { expiresIn: "24h" }
-        );
+        );  
 
         responseHandler.created(res, {
             token,
@@ -151,10 +155,66 @@ const getInfo = async(req, res) => {
     }
 };
 
+const uploadImage = async (req, res) => {
+    try{
+        // const user = await userModel.findById(req.user.id).select("profileImageName");
+        // if (!user) return responseHandler.badRequest(res, "user does not exist");
+
+        if (req.file === undefined) return responseHandler.badRequest(res,"you must select a file.");
+        const imgUrl = `http://localhost:8080/file/${req.file.filename}`;
+        //user.profileImage = imgUrl;
+        return responseHandler.ok(res,imgUrl);
+    }
+    catch{
+        responseHandler.error(res);
+    }
+}
+
+
+
+// media routes
+const getImage = async (req, res) => {
+    try {
+        let gfs;
+
+        const connection = mongoose.connection;
+        connection.once("open", function () {
+            gfs = Grid(conn.db, mongoose.mongo);
+            gfs.collection("photos");
+        });
+
+        const file = await gfs.files.findOne({ filename: req.params.filename });
+        const readStream = gfs.createReadStream(file.filename);
+        readStream.pipe(res);
+    } catch (error) {
+        responseHandler.badRequest("not found");
+    }
+};
+
+const deleteImage = async (req, res) => {
+    try {
+        let gfs;
+
+        const connection = mongoose.connection;
+        connection.once("open", function () {
+            gfs = Grid(conn.db, mongoose.mongo);
+            gfs.collection("photos");
+        });
+
+        await gfs.files.deleteOne({ filename: req.params.filename });
+        responseHandler.ok(res,"success");
+    } catch (error) {
+        responseHandler.error(res);
+    };
+}
+
 export default {
     signup,
     signin,
     getInfo,
     updatePassword,
-    updateUserDetails
+    updateUserDetails,
+    uploadImage,
+    getImage,
+    deleteImage
 };
